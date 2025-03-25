@@ -3,7 +3,6 @@ using System.Runtime.Serialization;
 
 namespace Kontenery
 {
-    [Serializable]
     internal class OverfillException : Exception
     {
         public OverfillException()

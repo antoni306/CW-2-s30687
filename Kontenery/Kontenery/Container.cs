@@ -8,51 +8,46 @@ using System.Threading.Tasks;
 
 namespace Kontenery
 {
-    abstract class Container
+    abstract class Container : IHazardNotifier
     {
-        private static List<int> _containersNumbers = new List<int>();
-
+        protected static int counterSNumber = 0;
         public double PropertyWeight { get; set; }
         public double Height { get; }
         public double ContainerWeight { get; }
         public double Depth { get; }
         public string SerialNumber { get; protected set; }
         public double MaxCapacity { get; }
-        public Container(double propWeight,double height,double contWeight,double depth,double maxCapacity)
+        public Container(double height,double contWeight,double depth,double maxCapacity)
         {
-            PropertyWeight = propWeight;
             Height = height;
             ContainerWeight = contWeight;
             Depth = depth;
             MaxCapacity = maxCapacity;
-        }
-        protected abstract void generateSerialNumber();
 
-        protected int generateNumber()
-        {
-            Random rand = new Random();
-            int number= rand.Next(0,1000);
-            for (int i = 0; i < _containersNumbers.Count(); i++)
-            {
-                if (number == _containersNumbers[i])
-                    generateNumber();
-            }
-            _containersNumbers.Add(number);
-            return number;
         }
-        public void loadOut()
+
+        
+        public virtual void loadOut(double weight)
         {
-            PropertyWeight = 0;
+            if(weight<=PropertyWeight)
+                PropertyWeight -= weight;
         }
-        public void loadIn(double weight)
+        protected virtual void loadIn(double weight)
         {
             if (weight + PropertyWeight > MaxCapacity)
-                throw new OverfillException();
+                //Console.WriteLine("exception: " + (weight + PropertyWeight) + " max " + MaxCapacity);
+                //throw new OverfillException();
+            PropertyWeight += weight;
         }
-        
 
-
-
+        public void DangerousSituation(string m)
+        {
+            Console.WriteLine(m);
+        }
+        public override string ToString()
+        {
+            return "Serial number: " + this.SerialNumber + "\nPropertyWeight: "+PropertyWeight+"\nHeight: "+Height+"\nContainer Weight: "+ContainerWeight+"\nDepth: "+Depth+"\nMax Capacity: "+MaxCapacity;
+        }
     }
     
 }
