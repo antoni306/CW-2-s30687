@@ -16,7 +16,7 @@ namespace Kontenery
         public double Height { get; }
         public double ContainerWeight { get; }
         public double Depth { get; }
-        public string SerialNumber { get; }
+        public string SerialNumber { get; protected set; }
         public double MaxCapacity { get; }
         public Container(double propWeight,double height,double contWeight,double depth,double maxCapacity)
         {
@@ -28,7 +28,7 @@ namespace Kontenery
         }
         protected abstract void generateSerialNumber();
 
-        private int generateNumber()
+        protected int generateNumber()
         {
             Random rand = new Random();
             int number= rand.Next(0,1000);
